@@ -100,13 +100,13 @@ public class MaintenencrServiceImpl implements MaintenanceService {
 			}
 
 			connection.close();
-
-			output = "Interted Successfully";
+			String table = allInterruptions();
+			output = "{\"status\":\"success\", \"data\": \"" + table + "\"}";
 			query = "";
 
 		} catch (Exception e) {
 			// TODO: handle exception
-			output = "Error while inserting interruption";
+			output =  "{\"status\":\"error\", \"data\": \"Error while inserting the data.\"}";
 			System.err.println(e.getMessage());
 		}
 
@@ -116,10 +116,12 @@ public class MaintenencrServiceImpl implements MaintenanceService {
 	//	=====================================RETRIVE LOGIC=========================================
 
 	@Override
-	public List<Interruption> allInterruptions() {
+	public String allInterruptions() {
 		// TODO Auto-generated method stub
 		list =new ArrayList<Interruption>();
 		query = "SELECT * FROM `interruption`";
+		String output = "";
+		String table = "";
 		try {
 			connection = connect();
 			if (connection == null) {
@@ -155,19 +157,48 @@ public class MaintenencrServiceImpl implements MaintenanceService {
 				}
 
 
-				interruption = new Interruption(inType, title, description, startDate, endDate,efList,approval,handledBy);
+				interruption = new Interruption(inType, title, description, startDate,endDate ,efList,approval,handledBy);
 				interruption.setId(id);
 				interruption.setTimeStamp(timestamp);
 				list.add(interruption);
 			}
+			
+			table = "<table class='table'> <thead class='thead-dark'> <tr> <th scope='col'>Title</th>"+
+			"<th scope='col'>Type</th>"+
+			"<th scope='col'>Description</th>"+
+			"<th scope='col'>StartDate</th>"+
+			"<th scope='col'>EndDate</th>"+
+			"<th scope='col'>EffectedList</th>"+
+			"<th scope='col'>Approval</th>"+
+			"<th scope='col'>HandledBy</th>"
+			+ "<th scope='col'>Action</th>"
+			+ "</tr><tbody>";
+			
+			for (Interruption interruption : list) {
+				table += "<tr>"
+						+ "<td><input type='hidden' name='hidItemIDUpdate' id='hideItemIDUpdate' value='"+interruption.getId()+"'>"+interruption.getTitle()+"</td>"
+						+ "<td>"+interruption.getInType()+"</td>"
+						+ "<td>"+interruption.getDescription()+"</td>"
+						+ "<td>"+interruption.getInterruptionStartDate()+"</td>"
+						+ "<td>"+interruption.getInterruptionEndDate()+"</td>"
+						+ "<td>"+interruption.getEfectedList()+"</td>"
+						+ "<td>"+interruption.getApproval()+"</td>"
+						+ "<td>"+interruption.getHandledBy()+"</td>"
+						+ "<td><input name='btnUpdate' type='button' value='Update' class='btnUpdate btn btn-primary btn-sm' data-intid='"+interruption.getId()+"'>"
+						+ "&nbsp&nbsp<input name='btnRemove' type='button' value='Remove' class='btnRemove btn btn-danger btn-sm' data-intid='"+interruption.getId()+"'></td>"
+						+ "</tr>";
+			}
+			table +="</tbody></table>";
+			output = "{\"status\":\"success\", \"data\": \"" + table + "\"}";
 			connection.close();
 			query = "";
 
 		} catch (Exception e) {
 			// TODO: handle exception
+			output =  "{\"status\":\"error\", \"data\": \"Error while retriving the data.\"}";
 			System.err.println(e.getMessage());
 		}
-		return list;
+		return output;
 	}
 
 	//	=====================================UPDATE LOGIC=========================================
