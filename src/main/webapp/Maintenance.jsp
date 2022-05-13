@@ -26,7 +26,7 @@
 					<label for="intType">Select Interrupt Type</label>
 					<select id="intType" class="form-control"  name="intType"> 
 					  <option selected value="" id="selectedInt">Choose...</option>
-					  <option value="Demand maintein">Demand maintain</option>
+					  <option value="Demand maintain">Demand maintain</option>
 					  <option value="Special Request">Special Request</option>
 					  <option value="Emergency">Emergency</option>
 					  <option value="Power Failier">Power Failure</option>
@@ -43,24 +43,30 @@
 			</div>
 			<div class="form-row">
 			  <div class="form-group col-md-6">
-				<label for="inputCity">Start Date</label>
+				<label for="sDate">Start Date</label>
 				<input type="datetime-local" class="form-control" id="sDate" name="sDate">
 			  </div>
 			  
 			  <div class="form-group col-md-6">
-				<label for="inputState">End Date</label>
+				<label for="eDate">End Date</label>
 				<input type="datetime-local" class="form-control" id="eDate" name="eDate">
 			  </div>
 	
-			  <div class="form-group col-md-12">
+			  <div class="form-group col-md-6">
 				<label for="approval">Approval</label>
 				<select id="approval" class="form-control"  name="approval"> 
 					<option selected value="Pending">Pending</option>
 					<option value="Approved">Approved</option>
 				  </select>
 			  </div>
+			  <div class="form-group col-md-6">
+				<label for="approval">Handle By</label>
+				<input type="text" class="form-control" id="handledby" name="handledby">
 			</div>
-			<input type="hidden" id="hiddenIDSAve" value="">
+			</div>
+			
+			<input type="hidden" name="hiddenIDSAve" id="hiddenIDSAve" value="">
+
 			<button type="button" class="btn btn-primary" id="btnSave">Save</button>
 		  </form>
 

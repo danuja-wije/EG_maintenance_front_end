@@ -100,8 +100,7 @@ public class MaintenencrServiceImpl implements MaintenanceService {
 			}
 
 			connection.close();
-			String table = allInterruptions();
-			output = "{\"status\":\"success\", \"data\": \"" + table + "\"}";
+			output = allInterruptions();
 			query = "";
 
 		} catch (Exception e) {
@@ -176,7 +175,7 @@ public class MaintenencrServiceImpl implements MaintenanceService {
 			
 			for (Interruption interruption : list) {
 				table += "<tr>"
-						+ "<td><input type='hidden' name='hidItemIDUpdate' id='hideItemIDUpdate' value='"+interruption.getId()+"'>"+interruption.getTitle()+"</td>"
+						+ "<td><input type='hidden' name='hideIDUpdate' id='hideIDUpdate' value='"+interruption.getId()+"'>"+interruption.getTitle()+"</td>"
 						+ "<td>"+interruption.getInType()+"</td>"
 						+ "<td>"+interruption.getDescription()+"</td>"
 						+ "<td>"+interruption.getInterruptionStartDate()+"</td>"
@@ -230,12 +229,12 @@ public class MaintenencrServiceImpl implements MaintenanceService {
 
 			connection.close();
 
-			output = "Updated Successfully";
+			output = allInterruptions();
 			query = "";
 
 		} catch (Exception e) {
 			// TODO: handle exception
-			output = "Error while inserting Updating";
+			output =  "{\"status\":\"error\", \"data\": \"Error while updating the data.\"}";
 			System.err.println(e.getMessage());
 		}
 
@@ -330,17 +329,20 @@ public class MaintenencrServiceImpl implements MaintenanceService {
 			preparedStatement.execute();
 
 			connection.close();
-
-			output = "Delete Successfully";
+			output = allInterruptions();
 			query = "";
 
 		} catch (Exception e) {
 			// TODO: handle exception
-			output = "Error while inserting Deleting";
+			output =  "{\"status\":\"error\", \"data\": \"Error while deleting the data.\"}";
 			System.err.println(e.getMessage());
 		}
 
 		return output;
+	}
+	public List<String> allCust(){
+		return null;
+		
 	}
 
 }

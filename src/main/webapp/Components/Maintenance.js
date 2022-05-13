@@ -33,8 +33,7 @@ $(document).on('click', "#btnSave", function (event) {
     }
 // If valid------------------------
     var type = ($("#hiddenIDSAve").val() == "") ? "POST" : "PUT";
-    console.log(type);
-    console.log($("#formData").serialize());
+	console.log($("#formData").serialize());
     $.ajax({
         url: "MaintenanceServlet",
         type: type,
@@ -43,7 +42,6 @@ $(document).on('click', "#btnSave", function (event) {
         complete: function (response, status) {
             onItemSaveComplete(response.responseText, status);
         }
-
     });
 });
 $(document).on("click", ".btnUpdate", function (event) {    
@@ -54,9 +52,12 @@ $(document).on("click", ".btnUpdate", function (event) {
     $("#desc").val($(this).closest("tr").find('td:eq(2)').text());
     $("#sDate").val(tConvert($(this).closest("tr").find('td:eq(3)').text()));
     $("#eDate").val(tConvert($(this).closest("tr").find('td:eq(4)').text()));
-    $("#custIDs").val($(this).closest("tr").find('td:eq(5)').text());
+     var custList = $(this).closest("tr").find('td:eq(5)').text()
+    custList = custList.replace('[', '');
+    custList = custList.replace(']', '');
+    $("#custIDs").val(custList);
     $("#approval").val($(this).closest("tr").find('td:eq(6)').text());
-   
+    $("#handledby").val($(this).closest("tr").find('td:eq(7)').text());
 });
 
 $(document).on("click", ".btnRemove", function (event) {
@@ -78,24 +79,28 @@ function validateItemForm() {
 
 function onItemSaveComplete(response, status) {
     if (status == "success") {
+
         var resultSet = JSON.parse(response);
+
         if (resultSet.status.trim() == "success") {
-            $("#alertSuccess").text("Successfully saved.");
+
+            $(".gridView").html(resultSet.data);
+            $("#alertSuccess").text(status);
             $("#alertSuccess").show();
-            $("#divItemsGrid").html(resultSet.data);
         } else if (resultSet.status.trim() == "error") {
             $("#alertError").text(resultSet.data);
             $("#alertError").show();
         }
     } else if (status == "error") {
-        $("#alertError").text("Error while saving.");
+        $("#alertError").text("Error while loading.");
         $("#alertError").show();
     } else {
-        $("#alertError").text("Unknown error while saving..");
+        $("#alertError").text("Unknown error while loading..");
         $("#alertError").show();
     }
-    $("#hidItemIDSave").val("");
-    $("#formItem")[0].reset();
+    $("#intType").val("");
+    $("#hiddenIDSAve").val("");
+    $("#formData")[0].reset();
 }
 
 
@@ -121,9 +126,9 @@ function onItemDeleteComplete(response, status) {
     if (status == "success") {
         var resultSet = JSON.parse(response);
         if (resultSet.status.trim() == "success") {
-            $("#alertSuccess").text("Successfully deleted.");
+            $(".gridView").html(resultSet.data);
+            $("#alertSuccess").text(status);
             $("#alertSuccess").show();
-            $("#divItemsGrid").html(resultSet.data);
         } else if (resultSet.status.trim() == "error") {
             $("#alertError").text(resultSet.data);
             $("#alertError").show();
@@ -135,8 +140,9 @@ function onItemDeleteComplete(response, status) {
         $("#alertError").text("Unknown error while deleting..");
         $("#alertError").show();
     }
-    $("#hidItemIDSave").val("");
-    $("#formItem")[0].reset();
+    $("#hiddenIDSAve").val("");
+    
+    $("#formData")[0].reset();
 }
 function tConvert (date) {
     // Check correct time format and split into components
@@ -148,4 +154,5 @@ function tConvert (date) {
     var convDate = d +"T"+time; 
     return convDate; // return adjusted time or original string
   }
+
 

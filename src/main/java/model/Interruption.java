@@ -78,4 +78,12 @@ public class Interruption {
 		return handledBy;
 	}
 
+
+	@Override
+	public String toString() {
+		return "Interruption [inType=" + inType + ", title=" + title + ", description=" + description
+				+ ", interruptionStartDate=" + interruptionStartDate + ", interruptionEndDate=" + interruptionEndDate
+				+ ", efectedList=" + efectedList + ", approval=" + approval + ", handledBy=" + handledBy + "]";
+	}
+
 }
