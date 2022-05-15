@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
-<%@ page
-	import="controller.MaintenanceServlet,javax.servlet.jsp.PageContext"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -91,7 +90,8 @@
 						class="form-control" id="eDate" name="eDate">
 						<p id='validateEDate' style="color:red"> </p>
 				</div>
-
+			</div>
+			<div class="form-row">
 				<div class="form-group col-md-6">
 					<label for="approval">Approval</label> <select id="approval"
 						class="form-control" name="approval">
@@ -114,8 +114,6 @@
 	</div>
 	<br>
 	<div class="container-fluid">
-		<input type="hidden" id="contextPath"
-			value=pageContext.request.contextPath>
 		<div class="gridView"></div>
 	</div>
 </body>
