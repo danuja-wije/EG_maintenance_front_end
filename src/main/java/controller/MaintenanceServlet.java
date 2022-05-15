@@ -104,7 +104,7 @@ public class MaintenanceServlet extends HttpServlet {
 				
 				interruption = new Interruption(intType, intTitle, intDesc, intSdate, intEdate, custList, intApproval, intHandle);
 				interruption.setId(id);
-				System.out.println(interruption.toString());
+
 				String output = maintenanceService.updateInterruption(interruption);
 				response.getWriter().write(output);
 	}
@@ -136,7 +136,7 @@ public class MaintenanceServlet extends HttpServlet {
 			Scanner scanner = new Scanner(request.getInputStream(), "UTF-8"); 
 			String queryString = scanner.hasNext() ? 
 					scanner.useDelimiter("\\A").next() : ""; 
-			System.out.println("Query is :"+queryString);
+
 			scanner.close(); 
 			String[] params = queryString.split("&"); 
 			for (String param : params) 

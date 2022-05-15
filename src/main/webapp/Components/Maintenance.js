@@ -17,7 +17,7 @@ $(document).ready(function () {
     );
 });
 
-
+//insert action
 $(document).on('click', "#btnSave", function (event) {
 // Clear alerts---------------------
     $("#alertSuccess").text("");
@@ -26,24 +26,24 @@ $(document).on('click', "#btnSave", function (event) {
     $("#alertError").hide();
 // Form validation-------------------
     var status = validateItemForm();
-    if (status != true) {
-        $("#alertError").text(status);
-        $("#alertError").show();
-        return;
-    }
+    if (status == true) {
 // If valid------------------------
     var type = ($("#hiddenIDSAve").val() == "") ? "POST" : "PUT";
-	console.log($("#formData").serialize());
+
     $.ajax({
-        url: "MaintenanceServlet",
-        type: type,
-        data: $("#formData").serialize(),
-        dataType: "text",
-        complete: function (response, status) {
-            onItemSaveComplete(response.responseText, status);
-        }
-    });
+    url: "MaintenanceServlet",
+    type: type,
+    data: $("#formData").serialize(),
+    dataType: "text",
+    complete: function (response, status) {
+        onItemSaveComplete(response.responseText, status);
+    }
 });
+    }
+
+});
+
+//update action
 $(document).on("click", ".btnUpdate", function (event) {    
     $("#hiddenIDSAve").val($(this).data("intid"));
     $("#title").val($(this).closest("tr").find('td:eq(0)').text());
@@ -60,6 +60,7 @@ $(document).on("click", ".btnUpdate", function (event) {
     $("#handledby").val($(this).closest("tr").find('td:eq(7)').text());
 });
 
+//delete action
 $(document).on("click", ".btnRemove", function (event) {
     $.ajax(
         {
@@ -73,10 +74,61 @@ $(document).on("click", ".btnRemove", function (event) {
         });
 });
 
+//form validation
 function validateItemForm() {
-    return true;
+	if($("#intType").val()== ""){
+		hideAllertValidate("#validateIntType");
+		$("#validateIntType").html("**Interruption type required!")
+		return false;
+	}
+    else if($("#title").val()== ""){
+		hideAllertValidate("#validateTitle");
+		$("#validateTitle").html("**Title required!")
+		return false;
+    }
+    else if($("#desc").val()== ""){
+	hideAllertValidate("#validateDesc");
+        $("#validateDesc").html("**Description required!")
+        return false;
+    }
+    else if($("#custIDs").val()== ""){
+	hideAllertValidate("#validateCustIDs");
+        $("#validateCustIDs").html("**Customer required!")
+        return false;
+    }
+    else if($("#sDate").val()== ""){
+	hideAllertValidate("#validateSDate");
+        $("#validateSDate").html("**Start date required!")
+        return false;
+    }
+    else if($("#eDate").val()== ""){
+	hideAllertValidate("#validateEDate");
+        $("#validateEDate").html("**End date required!")
+        return false;
+    }
+    else if($("#handledby").val()== ""){
+	hideAllertValidate("#validateHandledBy");
+        $("#validateHandledBy").html("**Handled by required!")
+        return false;
+    }
+    else{
+        return true;
+    }
+  
 }
 
+//this function will display only the effected validate error and others will hide
+function hideAllertValidate(target){
+	$("#validateIntType").hide();
+	$("#validateTitle").hide();
+	$("#validateDesc").hide();
+	$("#validateCustIDs").hide();
+	$("#validateSDate").hide();
+	$("#validateEDate").hide();
+	$("#validateHandledBy").hide();
+	
+	$(target).show();
+}
 function onItemSaveComplete(response, status) {
     if (status == "success") {
 
@@ -98,7 +150,7 @@ function onItemSaveComplete(response, status) {
         $("#alertError").text("Unknown error while loading..");
         $("#alertError").show();
     }
-    $("#intType").val("");
+    $("#intType").html("Choose...");
     $("#hiddenIDSAve").val("");
     $("#formData")[0].reset();
 }
@@ -144,15 +196,16 @@ function onItemDeleteComplete(response, status) {
     
     $("#formData")[0].reset();
 }
+
+  // correct time format and split into components
 function tConvert (date) {
-    // Check correct time format and split into components
     var dateAr = date.split(" ");
     var d = dateAr[0];
     var time = dateAr[1];
     var timeAr = time.split(":");
     var time = timeAr[0]+":"+timeAr[1];
     var convDate = d +"T"+time; 
-    return convDate; // return adjusted time or original string
+    return convDate; // return adjusted time 
   }
 
 
